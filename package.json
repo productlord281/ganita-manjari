@@ -1,0 +1,7 @@
+{
+  "name": "ganita-manjari",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Ganita Manjari: retro maths adventure. Static game + Vercel serverless rooms.",
+  "engines": { "node": ">=20" }
+}
