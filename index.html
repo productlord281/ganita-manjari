@@ -681,6 +681,16 @@ function go(id){document.querySelectorAll(".scr").forEach(function(s){s.classLis
  if(id==="title")F.title();if(id==="select")olds();if(id==="room")room();if(id==="lobby")lobby();if(id==="story")story();if(id==="world")world();if(id==="feed")feed();if(id==="diary")diary();if(id==="vault")vault();if(id==="level")level();if(id==="play")twist();if(id==="castle")castle();if(id==="pick")pick();nb()}
 document.querySelectorAll("#nav button").forEach(function(b){b.onclick=function(){go(b.dataset.g)}});
 $("start").onclick=function(){go("select")};
+/* phone back button: step back one screen inside the game instead of leaving the page */
+(function(){var UP={play:"level",scene:"level",after:"level",level:"world",story:"world",feed:"world",diary:"world",vault:"world",castle:"world",pick:"select",select:"title",room:"select",lobby:"room"};
+ try{history.replaceState({g:0},"");history.pushState({g:1},"")}catch(e){return}
+ window.addEventListener("popstate",function(){try{history.pushState({g:1},"")}catch(e){}
+  var rv=$("reveal");if(rv&&!rv.hidden){var ok=$("rvok");if(ok)ok.click();else rv.hidden=true;return}
+  var tp=$("tp");if(tp&&!tp.hidden&&$("play").classList.contains("on")){tp.hidden=true;return}
+  var on=document.querySelector(".scr.on");if(!on)return;var id=on.id,to=UP[id];if(!to)return;
+  if(id==="castle"){try{AU.stop();MU.stop();VO.stop()}catch(e){}}
+  if(!S&&to!=="title"&&to!=="select")to="title";
+  go(to)})})();
 document.addEventListener("keydown",function(e){if(e.key==="Enter"&&$("title").classList.contains("on"))go("select")});
 document.addEventListener("keydown",function(e){var t=e.target;if(e.key!=="Enter"||!t||t.tagName!=="INPUT"||!$("gi")||!$("gi").contains(t)||!$("play").classList.contains("on"))return;e.preventDefault();var b=t.id==="px"&&$("pfd")?$("pfd"):$("gg");if(b)b.click()});
 document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest("button");if(b&&!b.disabled&&!$("castle").classList.contains("on"))AU.sfx("click")},true);
@@ -1927,5 +1937,5 @@ function castle(){var end=CM==="end";CM="";
  var tm=team();F.start({end:end,hs:tm.h.s,hn:tm.h.n,team:tm.t,multi:S.mode==="multi"&&RM.on()})}
 F.title();
 </script>
-<div id="bld" style="position:fixed;right:6px;bottom:4px;font:9px monospace;color:#888;opacity:.6;pointer-events:none;z-index:9">build 13Oct-d</div></body>
+<div id="bld" style="position:fixed;right:6px;bottom:4px;font:9px monospace;color:#888;opacity:.6;pointer-events:none;z-index:9">build 13Oct-e</div></body>
 </html>
