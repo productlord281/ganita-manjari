@@ -682,6 +682,7 @@ function go(id){document.querySelectorAll(".scr").forEach(function(s){s.classLis
 document.querySelectorAll("#nav button").forEach(function(b){b.onclick=function(){go(b.dataset.g)}});
 $("start").onclick=function(){go("select")};
 document.addEventListener("keydown",function(e){if(e.key==="Enter"&&$("title").classList.contains("on"))go("select")});
+document.addEventListener("keydown",function(e){var t=e.target;if(e.key!=="Enter"||!t||t.tagName!=="INPUT"||!$("gi")||!$("gi").contains(t)||!$("play").classList.contains("on"))return;e.preventDefault();var b=t.id==="px"&&$("pf")?$("pf"):$("gg");if(b)b.click()});
 document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest("button");if(b&&!b.disabled&&!$("castle").classList.contains("on"))AU.sfx("click")},true);
 function join(n,md){n=n.trim().slice(0,14);if(!n){$("ne").textContent="Type your name first.";$("nm").focus();return}
  if(RM.on())RM.close();
@@ -996,7 +997,7 @@ function begin(k){UL=UNITS[cur];uc=k;var u=UL[k],m=u.m,c=u.cg,gr=m&&m.g,lab=c?c.
  $("gi").oninput=$("gi").onclick=function(){G.tch=1};$("gc").style.display=G.ng?"none":"block";sq();msg("");go("play");if(!G.ng)dg();if(m&&m.probe)wireProbe();if(m&&m.tune)wireTune();if(m&&m.sim)wireSim()}
 function wireSim(){var sm=UL[uc].m.sim;G.sc={};G.st=0;sm.labels.forEach(function(l){G.sc[l]=0});function R(){$("fg").innerHTML='<table class="pt"><tr>'+sm.labels.map(function(l){return"<th>"+l+"</th>"}).join("")+"</tr><tr>"+sm.labels.map(function(l){return"<td>"+G.sc[l]+"</td>"}).join("")+'</tr></table><div class="tiny">Total: '+G.st+"</div>"}R();sm.steps.forEach(function(n,i){$("rs"+i).onclick=function(){if(G.done)return;for(var j=0;j<n;j++){G.sc[sm.f()]++;G.st++}R()}})}
 function wireProbe(){var pr=UL[uc].m.probe;G.pr=[];function R(){$("fg").innerHTML='<table class="pt"><tr><th>'+pr.lab+'</th><th>'+(pr.out||"the Head says")+'</th></tr>'+G.pr.map(function(r){return"<tr><td>"+r[0]+"</td><td>"+r[1]+"</td></tr>"}).join("")+'</table><div class="tiny">'+(pr.out?"Checks":"Feeds")+" left: "+(pr.tries-G.pr.length)+"</div>"}R();
- $("pf").onclick=function(){var x=parseFloat($("px").value);if(isNaN(x)||G.done)return;if(pr.block&&x===pr.block){msg("That one is not allowed yet. Find it yourself.");return}if(G.pr.length>=pr.tries){msg(pr.out?"No more checks. Use what you saw.":"No more feeds. Use what you saw.");return}G.pr.push([x,pr.f(x)]);R()}}
+ $("pf").onclick=function(){var x=parseFloat($("px").value);if(G.done)return;if(isNaN(x)){msg("Type a number in the box first, then press "+(pr.btn||"FEED")+".");return}if(pr.block&&x===pr.block){R();$("fg").insertAdjacentHTML("beforeend",'<div class="tiny" style="color:var(--pk)">The Head stays silent for '+x+". That one is yours to work out.</div>");msg("The Head will not say that one. Feed it a different number.");return}if(G.pr.length>=pr.tries){msg(pr.out?"No more checks. Use what you saw.":"No more feeds. Use what you saw.");return}G.pr.push([x,pr.f(x)]);R()}}
 function wireTune(){function U(){G.ta=parseFloat($("sa").value);G.tb=parseFloat($("sb").value);$("av").textContent=G.ta;$("bv").textContent=G.tb;msg("y = "+G.ta+"x "+(G.tb<0?"- "+(-G.tb):"+ "+G.tb));dg()}$("sa").oninput=U;$("sb").oninput=U;U()}
 function chkT(){if(G.done)return;var bad=-1;G.tu.T.forEach(function(q,i){if(bad<0&&Math.abs(G.ta*q[0]+G.tb-q[1])>1e-6)bad=i});if(bad<0)win();else{AU.sfx("no");msg("The line misses lantern "+(bad+1)+". Try changing a or b.")}}
 $("gh").onclick=function(){var u=UL[uc];if(!G||G.done||!u||!G.h)return;G.hn=(G.hn||0)+1;var m=$("gm");m.className="";if(G.hn>1&&u.t2)m.innerHTML="Tool: "+u.t2.f;else m.textContent="Hint: "+G.h};
@@ -1925,5 +1926,5 @@ function castle(){var end=CM==="end";CM="";
  var tm=team();F.start({end:end,hs:tm.h.s,hn:tm.h.n,team:tm.t,multi:S.mode==="multi"&&RM.on()})}
 F.title();
 </script>
-</body>
+<div id="bld" style="position:fixed;right:6px;bottom:4px;font:9px monospace;color:#888;opacity:.6;pointer-events:none;z-index:9">build 13Oct-c</div></body>
 </html>
